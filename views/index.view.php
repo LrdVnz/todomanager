@@ -1,50 +1,56 @@
 <?php require('partials/head.php') ?>
 
-<h3>task manager</h3>
+<div id="container">
+  <div id="list">
+    <h3>Task Manager</h3>
+    <ul>
+      <?php foreach ($tasks as $task) : ?>
+        <li>
 
-<ul>
-  <?php foreach ($tasks as $task) : ?>
-    <li>
+          <?php if ($task->completed) : ?>
 
-      <?php if ($task->completed) : ?>
+            <p class="task completed"><?= $task->descr; ?></p>
 
-        <s><?= $task->descr; ?></s>
+          <?php else : ?>
 
-      <?php else : ?>
+            <p class="task notCompleted"><?= $task->descr; ?></p>
 
-        <?= $task->descr; ?>
+          <?php endif; ?>
 
-      <?php endif; ?>
+          <section id="index-actions">
+            <div id="complete">
+              <form method="POST" action="completeTasks">
+                <button type="submit" name="complete" value="<?= $task->descr; ?>">Completed</button>
+              </form>
+            </div>
 
-      <div id="delete">
-      <form method="POST" action="deleteTasks">
-        <button type="submit" name="delete" value= <?= $task->descr;?> >delete</button>
-      </form>
-    </div>
+            <div id="delete">
+              <form method="POST" action="deleteTasks">
+                <button type="submit" name="delete" value="<?= $task->descr; ?>">Delete</button>
+              </form>
+            </div>
 
-    </li>
+            <div id="modify">
+              <form method="POST" action="modifyTasks">
+                <input id="modify-input" type="text" name="newDescr" placeholder="put the new name"></input>
+                <button type="submit" name="oldDescr" value="<?= $task->descr ?>">Modify</button>
+              </form>
+            </div>
+          </section>
 
-  <?php endforeach; ?>
-</ul>
 
+        </li>
 
-<div id="create">
-  <h4>Create a new task</h4>
-  <form method="POST" action="tasks">
-    <input type="text" name="task"></input>
-    <button type="submit">Submit</button>
-  </form>
+      <?php endforeach; ?>
+    </ul>
+  </div>
+
+  <div id="create">
+    <h4>Create a new task</h4>
+    <form method="POST" action="tasks">
+      <input type="text" name="task"></input>
+      <button type="submit">Create</button>
+    </form>
+  </div>
 </div>
-
-
-<div id="modify">
-  <h4>Modify. Put the task name</h4>
-  <form method="POST" action="modifyTasks">
-    <input type="text" name="oldDescr"></input>
-    <p>Put the updated name</p>
-    <input type="text" name="newDescr"></input>
-    <button type="submit">Submit</button>
-  </form>
-</div>
-
 <?php require('partials/footer.php') ?>

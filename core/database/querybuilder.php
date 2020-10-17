@@ -47,4 +47,31 @@ class QueryBuilder
         $statement->execute(array(':newDescr' => $newDescr, ':oldDescr' => $oldDescr));
 
     }
+
+    public function completeTask($task)
+    {
+        
+        $isCompleted = "SELECT completed FROM todos WHERE descr='$task'" ; //search how to automatically escape quotes
+
+        $control = $this->pdo->prepare($isCompleted);
+
+        $result = $control->execute();    
+
+        $arr = $control->fetchAll(); 
+       
+        $completed = $arr[0]["completed"] ;
+
+        if($completed === '0'){
+
+        $sqlComplete = "UPDATE todos SET completed='1' WHERE descr=:task" ;
+
+        $statement = $this->pdo->prepare($sqlComplete) ; 
+
+        $statement->execute(array(':task'=>$task));
+
+        } else {
+            die ('task already completed. 
+            <p><a href="/"> HOME </a></p>' ); 
+        }
+    }
 }

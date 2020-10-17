@@ -1,0 +1,68 @@
+
+html {
+    background-color: #ececec;
+}
+
+#container {
+    width: 40%;
+    margin: 30px auto; 
+    background-color: #fda565; 
+    padding: 20px;
+    padding-top: 5px;
+}
+
+h3 {
+    background-color: white ; 
+    text-align:center;
+    width: fit-content;
+    margin: 10px auto;
+    padding: 5px 8px;
+}
+
+li {
+    margin: 10px; 
+}
+
+#create {
+    text-align: center;
+    padding: 30px 0px;
+}
+
+#index-actions {
+    float:right;
+    width:fit-content;
+    width: 340px; 
+}
+
+#index-actions div {
+    display: inline;
+    float:right;
+    padding-left: 4px; 
+}
+
+.action {
+    margin: 30px auto; 
+    width:fit-content; 
+}
+
+.action.redirect a {
+    color: red;
+}
+
+#modify-input {
+    width: 120px; 
+}
+
+.task {
+    display:inline;     
+}
+
+.task.completed {
+    text-decoration: line-through;
+    color: rgba(145, 142, 142, 0.733);
+}
+
+.task.notCompleted {
+    text-decoration: underline; 
+    color: rgb(19 43 80);
+}

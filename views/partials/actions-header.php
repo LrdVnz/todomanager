@@ -8,3 +8,5 @@
     <link rel="stylesheet" href="/public/stylesheets/style.css">
 </head>
 <body>
+
+<h2 class="action redirect"><a  href="/">Home</a></h2>
