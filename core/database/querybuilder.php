@@ -28,21 +28,29 @@ class QueryBuilder
     }
 
     public function intoDB($descr)
-    {
+    { 
+        $descr = $this->mysqli->real_escape_string($descr);
+
         $this->mysqli->query(
             "INSERT INTO todos(descr) VALUES('$descr')"
         );
     }
 
-    public function deleteFromDB($oldtask)
+    public function deleteFromDB($oldTask)
     {
+        $oldTask = $this->mysqli->real_escape_string($oldTask);
+
         $this->mysqli->query(
-            "DELETE FROM todos WHERE descr='$oldtask' " 
+            "DELETE FROM todos WHERE descr='$oldTask' " 
         ) ; 
     }
 
     public function modifyFromDB($oldDescr, $newDescr) 
     {
+        $oldDescr = $this->mysqli->real_escape_string($oldDescr);
+
+        $newDescr = $this->mysqli->real_escape_string($newDescr);
+
         $this->mysqli->query(
             "UPDATE todos SET descr='$newDescr' WHERE descr='$oldDescr' "
         ) ; 
@@ -50,6 +58,8 @@ class QueryBuilder
 
     public function completeTask($task)
     {  
+        $task = $this->mysqli->real_escape_string($task);
+
         $control = $this->mysqli->query(
             "SELECT completed FROM todos WHERE descr='$task' "
         );
