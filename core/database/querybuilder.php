@@ -3,75 +3,68 @@
 class QueryBuilder
 {
 
-    protected $pdo;
+    protected $mysqli;
 
-    public function __construct($pdo)
+    public function __construct($mysqli)
     {
-        $this->pdo = $pdo;
+        $this->mysqli = $mysqli;
     }
 
-    public function selectAll($table)
+    public function selectAll()
     {
-        $statement = $this->pdo->prepare("select * from {$table}");
+        $result = $this->mysqli->query(
+            "SELECT * FROM todos"
+        );
 
-        $statement->execute();
+        $arr = $result->fetch_all(MYSQLI_ASSOC) ;
+        
+        $final = [];
 
-        return $statement->fetchAll(PDO::FETCH_CLASS);
+        foreach($arr as $item) {
+        array_push($final, $item);
+        }
+
+        return $final ; 
     }
-
 
     public function intoDB($descr)
     {
-        $sqlCreate = "INSERT INTO todos(descr) VALUES(:descr)";
-
-        $statement = $this->pdo->prepare($sqlCreate);
-
-        $statement->execute(array(':descr' => $descr));
+        $this->mysqli->query(
+            "INSERT INTO todos(descr) VALUES('$descr')"
+        );
     }
 
     public function deleteFromDB($oldtask)
     {
-        $sqlDelete = "DELETE FROM todos WHERE descr=:oldtask" ;
-
-        $statement = $this->pdo->prepare($sqlDelete) ; 
-
-        $statement->execute(array(':oldtask' => $oldtask));
+        $this->mysqli->query(
+            "DELETE FROM todos WHERE descr='$oldtask' " 
+        ) ; 
     }
 
     public function modifyFromDB($oldDescr, $newDescr) 
     {
-        $sqlModify = "UPDATE todos SET descr=:newDescr WHERE descr=:oldDescr" ;
-
-        $statement = $this->pdo->prepare($sqlModify) ; 
-
-        $statement->execute(array(':newDescr' => $newDescr, ':oldDescr' => $oldDescr));
-
+        $this->mysqli->query(
+            "UPDATE todos SET descr='$newDescr' WHERE descr='$oldDescr' "
+        ) ; 
     }
 
     public function completeTask($task)
-    {
-        
-        $isCompleted = "SELECT completed FROM todos WHERE descr='$task'" ; //search how to automatically escape quotes
+    {  
+        $control = $this->mysqli->query(
+            "SELECT completed FROM todos WHERE descr='$task' "
+        );
 
-        $control = $this->pdo->prepare($isCompleted);
+        $arr = $control->fetch_assoc(); 
 
-        $result = $control->execute();    
+        if($arr["completed"] === '0'){
 
-        $arr = $control->fetchAll(); 
-       
-        $completed = $arr[0]["completed"] ;
-
-        if($completed === '0'){
-
-        $sqlComplete = "UPDATE todos SET completed='1' WHERE descr=:task" ;
-
-        $statement = $this->pdo->prepare($sqlComplete) ; 
-
-        $statement->execute(array(':task'=>$task));
+          $this->mysqli->query(
+              "UPDATE todos SET completed='1' WHERE descr='$task' "
+          ) ; 
 
         } else {
             die ('task already completed. 
             <p><a href="/"> HOME </a></p>' ); 
-        }
+        } 
     }
 }
