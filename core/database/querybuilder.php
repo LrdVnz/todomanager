@@ -27,13 +27,16 @@ class QueryBuilder
         return $final ; 
     }
 
-    public function intoDB($descr)
+    public function intoDB($descr, $duedate)
     { 
         $descr = $this->mysqli->real_escape_string($descr);
-
-        $this->mysqli->query(
-            "INSERT INTO todos(descr) VALUES('$descr')"
+        
+        $result = $this->mysqli->query(
+            "INSERT INTO todos(descr, duedate) VALUES('$descr', '$duedate')"
         );
+        if(!$result){
+              die($this->mysqli->error);
+        }
     }
 
     public function deleteFromDB($oldTask)
